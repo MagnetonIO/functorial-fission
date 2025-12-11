@@ -21,7 +21,7 @@ tested-with:        GHC == 9.4.8, GHC == 9.6.3
 
 source-repository head
     type:     git
-    location: https://github.com/mlong/functorial-fission.git
+    location: https://github.com/MagnetonIO/functorial-fission.git
 
 common warnings
     ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates
