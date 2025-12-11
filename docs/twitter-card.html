@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200, height=600">
+    <title>Twitter Card - Functorial Fission</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 1200px;
+            height: 600px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0f172a;
+            color: #f1f5f9;
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background */
+        .bg-glow {
+            position: absolute;
+            top: 50%;
+            left: 30%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, transparent 60%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .bg-glow-2 {
+            position: absolute;
+            top: 30%;
+            right: 10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Atom decoration */
+        .atom {
+            position: absolute;
+            right: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 300px;
+            height: 300px;
+        }
+
+        .nucleus-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(245, 158, 11, 0.5);
+        }
+
+        .orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 2px solid rgba(147, 197, 253, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .orbit-1 { width: 140px; height: 140px; }
+        .orbit-2 { width: 200px; height: 200px; transform: translate(-50%, -50%) rotate(60deg); }
+        .orbit-3 { width: 260px; height: 260px; transform: translate(-50%, -50%) rotate(-30deg); }
+
+        .electron {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #3b82f6;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 750px;
+        }
+
+        .icon-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(37, 99, 235, 0.2);
+            border: 1px solid rgba(37, 99, 235, 0.4);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        h1 {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            color: #f1f5f9;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-bottom: 28px;
+        }
+
+        .equation-row {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .equation-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+        }
+
+        .equation-card .blue { color: #60a5fa; }
+        .equation-card .yellow { color: #fbbf24; }
+        .equation-card .purple { color: #a78bfa; }
+        .equation-card .green { color: #4ade80; }
+
+        .stats {
+            display: flex;
+            gap: 32px;
+            margin-top: 28px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 40px;
+            left: 80px;
+            right: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .author-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .repo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .repo svg {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+
+    <div class="atom">
+        <div class="nucleus-center"></div>
+        <div class="orbit orbit-1"></div>
+        <div class="orbit orbit-2"></div>
+        <div class="orbit orbit-3"></div>
+    </div>
+
+    <div class="content">
+        <div class="icon-row">
+            <div class="icon-box">&#x1F4D0;</div>
+            <div class="icon-box">&#x269B;</div>
+            <div class="icon-box">&#x03BB;</div>
+        </div>
+
+        <h1>Functorial <span>Fission</span></h1>
+
+        <p class="subtitle">
+            Nuclear physics meets category theory: binding energy as a functor,
+            conservation as structure, chain reactions as coalgebras.
+        </p>
+
+        <div class="equation-row">
+            <div class="equation-card">
+                <span class="blue">B</span><span class="yellow">:</span>
+                <span class="purple">Nucl</span> <span class="yellow">→</span>
+                <span class="purple">Energy</span>
+            </div>
+            <div class="equation-card">
+                <span class="green">~200 MeV</span> / fission
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <span class="stat-value">22</span>
+                <span class="stat-label">Page Paper</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">6</span>
+                <span class="stat-label">Haskell Modules</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">Type-Safe</span>
+                <span class="stat-label">Conservation Laws</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="author">
+            <div class="author-avatar">ML</div>
+            <span class="author-name">Matthew Long</span>
+        </div>
+        <div class="repo">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            MagnetonIO/functorial-fission
+        </div>
+    </div>
+</body>
+</html>

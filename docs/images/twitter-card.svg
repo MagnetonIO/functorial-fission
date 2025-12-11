@@ -1,0 +1,97 @@
+<svg width="1200" height="600" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="titleAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="nucleus" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#ea580c"/>
+    </linearGradient>
+    <radialGradient id="bgGlow" cx="30%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:rgba(37,99,235,0.2)"/>
+      <stop offset="100%" style="stop-color:transparent"/>
+    </radialGradient>
+    <radialGradient id="nucleusGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:rgba(245,158,11,0.5)"/>
+      <stop offset="100%" style="stop-color:transparent"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="600" fill="url(#bg)"/>
+  <rect width="1200" height="600" fill="url(#bgGlow)"/>
+
+  <!-- Atom decoration -->
+  <g transform="translate(950, 300)">
+    <!-- Glow -->
+    <circle cx="0" cy="0" r="120" fill="url(#nucleusGlow)"/>
+
+    <!-- Orbits -->
+    <ellipse cx="0" cy="0" rx="70" ry="70" fill="none" stroke="rgba(147,197,253,0.3)" stroke-width="2"/>
+    <ellipse cx="0" cy="0" rx="100" ry="100" fill="none" stroke="rgba(147,197,253,0.3)" stroke-width="2" transform="rotate(60)"/>
+    <ellipse cx="0" cy="0" rx="130" ry="130" fill="none" stroke="rgba(147,197,253,0.3)" stroke-width="2" transform="rotate(-30)"/>
+
+    <!-- Nucleus -->
+    <circle cx="0" cy="0" r="30" fill="url(#nucleus)"/>
+
+    <!-- Electrons -->
+    <circle cx="70" cy="0" r="6" fill="#3b82f6"/>
+    <circle cx="-50" cy="87" r="6" fill="#3b82f6"/>
+    <circle cx="113" cy="-65" r="6" fill="#3b82f6"/>
+  </g>
+
+  <!-- Icon boxes -->
+  <rect x="80" y="130" width="48" height="48" rx="12" fill="rgba(37,99,235,0.2)" stroke="rgba(37,99,235,0.4)"/>
+  <text x="104" y="162" font-family="system-ui" font-size="24" text-anchor="middle" fill="#93c5fd">📐</text>
+
+  <rect x="140" y="130" width="48" height="48" rx="12" fill="rgba(37,99,235,0.2)" stroke="rgba(37,99,235,0.4)"/>
+  <text x="164" y="162" font-family="system-ui" font-size="24" text-anchor="middle" fill="#93c5fd">⚛</text>
+
+  <rect x="200" y="130" width="48" height="48" rx="12" fill="rgba(37,99,235,0.2)" stroke="rgba(37,99,235,0.4)"/>
+  <text x="224" y="162" font-family="Inter, system-ui" font-size="24" text-anchor="middle" fill="#93c5fd">λ</text>
+
+  <!-- Title -->
+  <text x="80" y="250" font-family="Inter, system-ui, sans-serif" font-size="56" font-weight="800" fill="#f1f5f9">Functorial </text>
+  <text x="370" y="250" font-family="Inter, system-ui, sans-serif" font-size="56" font-weight="800" fill="url(#titleAccent)">Fission</text>
+
+  <!-- Subtitle -->
+  <text x="80" y="300" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#94a3b8">Nuclear physics meets category theory: binding energy as a functor,</text>
+  <text x="80" y="328" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#94a3b8">conservation as structure, chain reactions as coalgebras.</text>
+
+  <!-- Equation cards -->
+  <rect x="80" y="365" width="200" height="50" rx="12" fill="rgba(30,41,59,0.8)" stroke="#334155"/>
+  <text x="180" y="398" font-family="JetBrains Mono, monospace" font-size="18" text-anchor="middle">
+    <tspan fill="#60a5fa">B</tspan><tspan fill="#fbbf24">:</tspan>
+    <tspan fill="#a78bfa"> Nucl</tspan>
+    <tspan fill="#fbbf24"> →</tspan>
+    <tspan fill="#a78bfa"> Energy</tspan>
+  </text>
+
+  <rect x="300" y="365" width="170" height="50" rx="12" fill="rgba(30,41,59,0.8)" stroke="#334155"/>
+  <text x="385" y="398" font-family="JetBrains Mono, monospace" font-size="18" text-anchor="middle" fill="#4ade80">~200 MeV</text>
+  <text x="385" y="380" font-family="Inter, system-ui" font-size="10" text-anchor="middle" fill="#64748b">/ fission</text>
+
+  <!-- Stats -->
+  <text x="80" y="470" font-family="Inter, system-ui, sans-serif" font-size="28" font-weight="700" fill="#f1f5f9">22</text>
+  <text x="80" y="490" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#64748b" text-transform="uppercase" letter-spacing="0.05em">PAGE PAPER</text>
+
+  <text x="180" y="470" font-family="Inter, system-ui, sans-serif" font-size="28" font-weight="700" fill="#f1f5f9">6</text>
+  <text x="180" y="490" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#64748b" text-transform="uppercase" letter-spacing="0.05em">HASKELL MODULES</text>
+
+  <text x="320" y="470" font-family="Inter, system-ui, sans-serif" font-size="28" font-weight="700" fill="#f1f5f9">Type-Safe</text>
+  <text x="320" y="490" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#64748b" text-transform="uppercase" letter-spacing="0.05em">CONSERVATION LAWS</text>
+
+  <!-- Footer -->
+  <circle cx="100" cy="555" r="18" fill="url(#titleAccent)"/>
+  <text x="100" y="561" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="700" fill="white" text-anchor="middle">ML</text>
+  <text x="130" y="560" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#f1f5f9">Matthew Long</text>
+
+  <!-- GitHub -->
+  <path d="M1040 543 c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" fill="#64748b"/>
+  <text x="1062" y="560" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#64748b">MagnetonIO/functorial-fission</text>
+</svg>

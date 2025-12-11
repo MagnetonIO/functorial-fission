@@ -1,0 +1,105 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="50%" style="stop-color:#1e293b"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f1f5f9"/>
+      <stop offset="100%" style="stop-color:#93c5fd"/>
+    </linearGradient>
+    <linearGradient id="nucleusGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#ea580c"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="30%" cy="70%" r="40%">
+      <stop offset="0%" style="stop-color:rgba(37,99,235,0.15)"/>
+      <stop offset="100%" style="stop-color:transparent"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="80%" cy="30%" r="30%">
+      <stop offset="0%" style="stop-color:rgba(245,158,11,0.1)"/>
+      <stop offset="100%" style="stop-color:transparent"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- Grid pattern -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(71,85,105,0.1)" stroke-width="1"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Badge -->
+  <rect x="60" y="180" width="320" height="36" rx="18" fill="rgba(37,99,235,0.2)" stroke="rgba(37,99,235,0.4)"/>
+  <circle cx="82" cy="198" r="5" fill="#22c55e"/>
+  <text x="100" y="204" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#93c5fd">Category Theory + Nuclear Physics</text>
+
+  <!-- Title -->
+  <text x="60" y="290" font-family="Inter, system-ui, sans-serif" font-size="64" font-weight="800" fill="url(#titleGrad)">Functorial Fission</text>
+
+  <!-- Subtitle -->
+  <text x="60" y="340" font-family="Inter, system-ui, sans-serif" font-size="22" fill="#94a3b8">A categorical reformulation of nuclear fission physics with</text>
+  <text x="60" y="370" font-family="Inter, system-ui, sans-serif" font-size="22" fill="#94a3b8">type-safe Haskell implementation</text>
+
+  <!-- Tags -->
+  <rect x="60" y="410" width="140" height="36" rx="8" fill="rgba(51,65,85,0.6)" stroke="#475569"/>
+  <text x="130" y="434" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="500" fill="#e2e8f0" text-anchor="middle">Category Theory</text>
+
+  <rect x="215" y="410" width="80" height="36" rx="8" fill="rgba(51,65,85,0.6)" stroke="#475569"/>
+  <text x="255" y="434" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="500" fill="#e2e8f0" text-anchor="middle">Haskell</text>
+
+  <rect x="310" y="410" width="130" height="36" rx="8" fill="rgba(51,65,85,0.6)" stroke="#475569"/>
+  <text x="375" y="434" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="500" fill="#e2e8f0" text-anchor="middle">Nuclear Physics</text>
+
+  <rect x="455" y="410" width="100" height="36" rx="8" fill="rgba(51,65,85,0.6)" stroke="#475569"/>
+  <text x="505" y="434" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="500" fill="#e2e8f0" text-anchor="middle">Coalgebra</text>
+
+  <!-- Diagram box -->
+  <rect x="720" y="140" width="420" height="350" rx="16" fill="rgba(30,41,59,0.8)" stroke="#475569"/>
+
+  <!-- Diagram title -->
+  <text x="740" y="175" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#64748b" text-transform="uppercase" letter-spacing="0.1em">BINDING ENERGY FUNCTOR</text>
+
+  <!-- Equation box -->
+  <rect x="740" y="195" width="380" height="50" rx="8" fill="rgba(15,23,42,0.6)"/>
+  <text x="930" y="228" font-family="JetBrains Mono, monospace" font-size="18" text-anchor="middle">
+    <tspan fill="#93c5fd">B</tspan><tspan fill="#f59e0b">:</tspan>
+    <tspan fill="#a78bfa"> Nucl</tspan>
+    <tspan fill="#f59e0b"> →</tspan>
+    <tspan fill="#a78bfa"> Energy</tspan>
+  </text>
+
+  <!-- Morphism diagram -->
+  <rect x="740" y="260" width="380" height="100" rx="8" fill="rgba(15,23,42,0.4)"/>
+
+  <!-- U-236 -->
+  <text x="800" y="305" font-family="Inter, system-ui, sans-serif" font-size="28" font-weight="700" fill="#f59e0b">²³⁶U</text>
+  <text x="800" y="330" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#64748b">Uranium-236</text>
+
+  <!-- Arrow -->
+  <text x="910" y="310" font-family="Inter, system-ui, sans-serif" font-size="32" fill="#22c55e">→</text>
+
+  <!-- Products -->
+  <text x="980" y="300" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#93c5fd">¹⁴¹Ba + ⁹²Kr</text>
+  <text x="980" y="325" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#93c5fd">+ 3n</text>
+
+  <!-- Energy release box -->
+  <rect x="740" y="375" width="380" height="70" rx="8" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.3)"/>
+  <text x="930" y="402" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">B(φ) = Energy Release</text>
+  <text x="930" y="432" font-family="JetBrains Mono, monospace" font-size="24" font-weight="600" fill="#22c55e" text-anchor="middle">~200 MeV</text>
+
+  <!-- Author -->
+  <circle cx="80" cy="570" r="20" fill="url(#nucleusGrad)"/>
+  <text x="80" y="576" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="700" fill="white" text-anchor="middle">ML</text>
+  <text x="115" y="565" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#f1f5f9">Matthew Long</text>
+  <text x="115" y="582" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#64748b">@MagnetonIO</text>
+
+  <!-- GitHub logo and repo -->
+  <path d="M1095 558 c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" fill="#64748b"/>
+  <text x="1120" y="575" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#64748b">MagnetonIO/functorial-fission</text>
+</svg>

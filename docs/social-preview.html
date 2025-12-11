@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200, height=630">
+    <title>Social Preview - Functorial Fission</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 1200px;
+            height: 630px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: #f1f5f9;
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Background decoration */
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(37, 99, 235, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Grid pattern */
+        .grid-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(71, 85, 105, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(71, 85, 105, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            width: 100%;
+            padding: 60px;
+        }
+
+        .left {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-right: 40px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(37, 99, 235, 0.2);
+            border: 1px solid rgba(37, 99, 235, 0.4);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #93c5fd;
+            margin-bottom: 24px;
+            width: fit-content;
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #f1f5f9 0%, #93c5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 22px;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(51, 65, 85, 0.6);
+            border: 1px solid #475569;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #e2e8f0;
+        }
+
+        .right {
+            flex: 0.8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .diagram-box {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #475569;
+            border-radius: 16px;
+            padding: 32px;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .diagram-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            color: #e2e8f0;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .equation .functor {
+            color: #93c5fd;
+        }
+
+        .equation .arrow {
+            color: #f59e0b;
+        }
+
+        .equation .category {
+            color: #a78bfa;
+        }
+
+        .morphism-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 8px;
+        }
+
+        .nucleus {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nucleus-symbol {
+            font-size: 28px;
+            font-weight: 700;
+            color: #f59e0b;
+        }
+
+        .nucleus-label {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .morphism-arrow {
+            font-size: 32px;
+            color: #22c55e;
+        }
+
+        .products {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: flex-start;
+        }
+
+        .product-item {
+            font-size: 16px;
+            color: #93c5fd;
+        }
+
+        .energy-release {
+            margin-top: 16px;
+            text-align: center;
+            padding: 12px;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 8px;
+        }
+
+        .energy-label {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .energy-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 600;
+            color: #22c55e;
+        }
+
+        .author {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .author-handle {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .logo {
+            position: absolute;
+            bottom: 40px;
+            right: 60px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .github-icon {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grid-pattern"></div>
+
+    <div class="content">
+        <div class="left">
+            <div class="badge">
+                <span class="badge-dot"></span>
+                Category Theory + Nuclear Physics
+            </div>
+            <h1>Functorial Fission</h1>
+            <p class="subtitle">
+                A categorical reformulation of nuclear fission physics with
+                type-safe Haskell implementation
+            </p>
+            <div class="tags">
+                <span class="tag">Category Theory</span>
+                <span class="tag">Haskell</span>
+                <span class="tag">Nuclear Physics</span>
+                <span class="tag">Coalgebra</span>
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="diagram-box">
+                <div class="diagram-title">Binding Energy Functor</div>
+                <div class="equation">
+                    <span class="functor">B</span><span class="arrow">:</span>
+                    <span class="category">Nucl</span> <span class="arrow">→</span>
+                    <span class="category">Energy</span>
+                </div>
+
+                <div class="morphism-diagram">
+                    <div class="nucleus">
+                        <span class="nucleus-symbol">²³⁶U</span>
+                        <span class="nucleus-label">Uranium-236</span>
+                    </div>
+                    <span class="morphism-arrow">→</span>
+                    <div class="products">
+                        <span class="product-item">¹⁴¹Ba + ⁹²Kr</span>
+                        <span class="product-item">+ 3n</span>
+                    </div>
+                </div>
+
+                <div class="energy-release">
+                    <div class="energy-label">B(φ) = Energy Release</div>
+                    <div class="energy-value">~200 MeV</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="author">
+        <div class="author-avatar">ML</div>
+        <div class="author-info">
+            <span class="author-name">Matthew Long</span>
+            <span class="author-handle">@MagnetonIO</span>
+        </div>
+    </div>
+
+    <div class="logo">
+        <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+        MagnetonIO/functorial-fission
+    </div>
+</body>
+</html>
