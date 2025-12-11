@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functorial Fission | A Categorical Framework for Nuclear Physics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --accent: #f59e0b;
+            --bg: #0f172a;
+            --bg-light: #1e293b;
+            --bg-lighter: #334155;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #475569;
+            --code-bg: #1e293b;
+            --success: #22c55e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, var(--bg) 0%, var(--bg-light) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            background: var(--bg-lighter);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: var(--text-muted);
+            max-width: 700px;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-lighter);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 0;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        section .section-subtitle {
+            color: var(--text-muted);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        /* Features Grid */
+        .features {
+            background: var(--bg-light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Math Section */
+        .math-section {
+            background: var(--bg);
+        }
+
+        .equation-box {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            margin: 2rem 0;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            overflow-x: auto;
+        }
+
+        .equation-box .label {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Code Section */
+        .code-section {
+            background: var(--bg-light);
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .code-header {
+            background: var(--bg-lighter);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-header span {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .code-content pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .code-content .keyword { color: #c792ea; }
+        .code-content .type { color: #82aaff; }
+        .code-content .function { color: #82aaff; }
+        .code-content .string { color: #c3e88d; }
+        .code-content .comment { color: #546e7a; }
+        .code-content .number { color: #f78c6c; }
+        .code-content .operator { color: #89ddff; }
+
+        /* Paper Section */
+        .paper-section {
+            background: var(--bg);
+        }
+
+        .paper-card {
+            background: var(--bg-light);
+            border-radius: 1rem;
+            padding: 3rem;
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .paper-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .paper-info h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .paper-info p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .paper-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .paper-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .paper-preview {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            color: #1e293b;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .paper-preview h4 {
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .paper-preview .abstract {
+            font-size: 0.65rem;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-light);
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">Functorial Fission</a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#math">Mathematics</a></li>
+                <li><a href="#code">Code</a></li>
+                <li><a href="#paper">Paper</a></li>
+                <li><a href="https://github.com/mlong/functorial-fission">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <span class="hero-badge">Category Theory + Nuclear Physics + Haskell</span>
+        <h1>Functorial Fission</h1>
+        <p class="subtitle">
+            A categorical reformulation of nuclear fission physics, treating nuclear states as objects
+            in a symmetric monoidal category and fission processes as morphisms.
+        </p>
+        <div class="btn-group">
+            <a href="https://github.com/mlong/functorial-fission" class="btn btn-primary">View on GitHub</a>
+            <a href="#paper" class="btn btn-secondary">Read the Paper</a>
+        </div>
+    </header>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2>Key Contributions</h2>
+            <p class="section-subtitle">
+                Novel perspectives on nuclear physics through the lens of category theory
+            </p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">&#x1F4D0;</div>
+                    <h3>Category Nucl</h3>
+                    <p>Nuclear configurations form objects in a symmetric monoidal category.
+                       Fission processes are morphisms preserving conservation laws.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#x2192;</div>
+                    <h3>Binding Energy Functor</h3>
+                    <p>B: Nucl → Energy maps configurations to binding energies.
+                       Functoriality captures compositional energy accounting.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#x2705;</div>
+                    <h3>Conservation as Structure</h3>
+                    <p>Charge and baryon conservation emerge as constraints on morphism existence.
+                       Illegal transitions have no representation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#x1F500;</div>
+                    <h3>Coalgebraic Dynamics</h3>
+                    <p>Chain reactions modeled as coalgebras over branching functors.
+                       Neutron multiplication emerges naturally.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#x1F512;</div>
+                    <h3>Type-Safe Physics</h3>
+                    <p>Conservation laws enforced at compile time using GADTs and type families.
+                       Invalid fissions fail to compile.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#x1F4BB;</div>
+                    <h3>Executable Specification</h3>
+                    <p>Complete Haskell implementation demonstrates that categorical abstractions
+                       translate to working code.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="math-section" id="math">
+        <div class="container">
+            <h2>Mathematical Framework</h2>
+            <p class="section-subtitle">
+                Rigorous categorical foundations for nuclear fission physics
+            </p>
+
+            <div class="equation-box">
+                <span class="label">Semi-Empirical Mass Formula</span>
+                B(A,Z) = a<sub>v</sub>A - a<sub>s</sub>A<sup>2/3</sup> - a<sub>c</sub>Z²/A<sup>1/3</sup> - a<sub>a</sub>(A-2Z)²/A + δ(A,Z)
+            </div>
+
+            <div class="equation-box">
+                <span class="label">Binding Energy Functor on Objects</span>
+                B(⊕<sub>i</sub> (A<sub>i</sub>, Z<sub>i</sub>)) = Σ<sub>i</sub> B(A<sub>i</sub>, Z<sub>i</sub>)
+            </div>
+
+            <div class="equation-box">
+                <span class="label">Binding Energy Functor on Morphisms</span>
+                B(φ: X → Y) = B(Y) - B(X) &nbsp;&nbsp;[Energy Release]
+            </div>
+
+            <div class="equation-box">
+                <span class="label">Neutron Multiplication Coalgebra</span>
+                γ: NeutronState → F(NeutronState) &nbsp;&nbsp;where&nbsp;&nbsp; F(X) = (P<sub>fin</sub>(X), ℝ<sub>≥0</sub>)
+            </div>
+        </div>
+    </section>
+
+    <section class="code-section" id="code">
+        <div class="container">
+            <h2>Haskell Implementation</h2>
+            <p class="section-subtitle">
+                Type-safe, executable categorical physics
+            </p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>FunctorialFission/Functor.hs</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">-- | The Binding Energy Functor on objects</span>
+<span class="function">bindingFunctorObj</span> <span class="operator">::</span> <span class="type">SEMFCoefficients</span> <span class="operator">-></span> <span class="type">NuclearConfig</span> <span class="operator">-></span> <span class="type">MeV</span>
+<span class="function">bindingFunctorObj</span> coef (<span class="type">NuclearConfig</span> ns) <span class="operator">=</span>
+  sum <span class="operator">$</span> map (bindingEnergy coef) ns
+
+<span class="comment">-- | The Binding Energy Functor on morphisms</span>
+<span class="function">bindingFunctorMor</span> <span class="operator">::</span> <span class="type">SEMFCoefficients</span> <span class="operator">-></span> <span class="type">NuclearMorphism</span> <span class="operator">-></span> <span class="type">MeV</span>
+<span class="function">bindingFunctorMor</span> coef (<span class="type">NuclearMorphism</span> src tgt _) <span class="operator">=</span>
+  bindingFunctorObj coef tgt <span class="operator">-</span> bindingFunctorObj coef src</pre>
+                </div>
+            </div>
+
+            <div class="code-block" style="margin-top: 2rem;">
+                <div class="code-header">
+                    <span>FunctorialFission/TypeSafe.hs</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">-- | Type-safe fission with conservation laws enforced at compile time</span>
+<span class="keyword">data</span> <span class="type">SafeFission</span> src tgt <span class="keyword">where</span>
+  <span class="type">SafeFission</span> <span class="operator">::</span> (<span class="type">TotalZ</span> src <span class="operator">~</span> <span class="type">TotalZ</span> tgt, <span class="type">TotalA</span> src <span class="operator">~</span> <span class="type">TotalA</span> tgt)
+              <span class="operator">=></span> <span class="type">TConfig</span> src <span class="operator">-></span> <span class="type">TConfig</span> tgt <span class="operator">-></span> <span class="type">SafeFission</span> src tgt
+
+<span class="comment">-- This compiles: U-236 → Ba-141 + Kr-92 + 3n (conserves A and Z)</span>
+<span class="function">exampleFission</span> <span class="operator">::</span> <span class="type">SafeFission</span>
+  '[<span class="type">TNuclide</span> <span class="number">236</span> <span class="number">92</span>]
+  '[<span class="type">TNuclide</span> <span class="number">141</span> <span class="number">56</span>, <span class="type">TNuclide</span> <span class="number">92</span> <span class="number">36</span>, <span class="type">TNuclide</span> <span class="number">1</span> <span class="number">0</span>, <span class="type">TNuclide</span> <span class="number">1</span> <span class="number">0</span>, <span class="type">TNuclide</span> <span class="number">1</span> <span class="number">0</span>]
+<span class="function">exampleFission</span> <span class="operator">=</span> <span class="type">SafeFission</span> source target</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="paper-section" id="paper">
+        <div class="container">
+            <h2>The Paper</h2>
+            <p class="section-subtitle">
+                Full arXiv-style treatment with rigorous mathematics
+            </p>
+
+            <div class="paper-card">
+                <div class="paper-info">
+                    <h3>A Functorial Formulation of Nuclear Fission</h3>
+                    <p>
+                        Mass–Energy Equivalence, Binding Energy, and Chain-Reaction Dynamics
+                        in a Categorical Framework
+                    </p>
+                    <div class="paper-meta">
+                        <div class="paper-meta-item">
+                            <span>&#x1F4C4;</span>
+                            <span>22 pages</span>
+                        </div>
+                        <div class="paper-meta-item">
+                            <span>&#x1F4CA;</span>
+                            <span>7 sections</span>
+                        </div>
+                        <div class="paper-meta-item">
+                            <span>&#x1F4D6;</span>
+                            <span>12 references</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <a href="https://github.com/mlong/functorial-fission/blob/main/pdf/main.pdf" class="btn btn-primary">Download PDF</a>
+                        <a href="https://github.com/mlong/functorial-fission/blob/main/latex/main.tex" class="btn btn-secondary">View LaTeX Source</a>
+                    </div>
+                </div>
+                <div class="paper-preview">
+                    <h4>ABSTRACT</h4>
+                    <p class="abstract">
+                        We present a categorical reformulation of nuclear fission physics,
+                        treating nuclear configurations as objects in a symmetric monoidal
+                        category and fission processes as morphisms preserving essential structure.
+                        The binding energy function is elevated to a functor B: Nucl → Energy,
+                        and conservation laws (charge, baryon number, energy-momentum) emerge as
+                        natural transformations. Chain-reaction dynamics are modeled coalgebraically,
+                        with neutron multiplication captured by coalgebras over a branching functor...
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo">Functorial Fission</span>
+                    <p>
+                        A categorical framework for nuclear fission physics, combining
+                        rigorous mathematics with typed functional programming.
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="https://github.com/mlong/functorial-fission">GitHub Repository</a></li>
+                        <li><a href="https://github.com/mlong/functorial-fission/blob/main/pdf/main.pdf">PDF Paper</a></li>
+                        <li><a href="https://github.com/mlong/functorial-fission/tree/main/code">Haskell Code</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>References</h4>
+                    <ul>
+                        <li><a href="https://en.wikipedia.org/wiki/Nuclear_fission">Nuclear Fission</a></li>
+                        <li><a href="https://en.wikipedia.org/wiki/Category_theory">Category Theory</a></li>
+                        <li><a href="https://www.haskell.org/">Haskell Language</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Matthew Long. Released under MIT License.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,41 @@
+# LaTeX build files
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+latex/*.aux
+latex/*.log
+latex/*.out
+latex/*.toc
+
+# Haskell build files
+dist/
+dist-newstyle/
+.stack-work/
+*.hi
+*.o
+*.cabal.sandbox.config
+cabal.sandbox.config
+.cabal-sandbox/
+*.prof
+*.hp
+*.eventlog
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Keep PDF output
+!pdf/*.pdf
