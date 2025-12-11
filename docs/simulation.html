@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functorial Fission Simulator | Interactive Nuclear Physics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --accent: #f59e0b;
+            --bg: #0f172a;
+            --bg-light: #1e293b;
+            --bg-lighter: #334155;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #475569;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-light);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        /* Main Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .simulation-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .simulation-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Canvas Area */
+        .canvas-container {
+            background: var(--bg-light);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .canvas-header {
+            background: var(--bg-lighter);
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .canvas-title {
+            font-weight: 600;
+        }
+
+        .canvas-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        #simulation-canvas {
+            width: 100%;
+            height: 500px;
+            display: block;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .panel {
+            background: var(--bg-light);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            background: var(--bg-lighter);
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .panel-content {
+            padding: 1rem;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        select, input[type="number"], input[type="range"] {
+            width: 100%;
+            padding: 0.5rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        input[type="range"] {
+            padding: 0;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .range-value {
+            text-align: right;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-top: 0.25rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--bg-lighter);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        /* Stats Display */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .stat-item {
+            background: var(--bg);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+
+        .stat-value.energy { color: var(--success); }
+        .stat-value.neutrons { color: var(--primary); }
+        .stat-value.fissions { color: var(--accent); }
+        .stat-value.time { color: var(--text); }
+
+        /* Chart */
+        .chart-container {
+            height: 150px;
+            position: relative;
+            margin-top: 1rem;
+        }
+
+        #chart-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Equation Display */
+        .equation-display {
+            background: var(--bg);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .equation-display .functor { color: #93c5fd; }
+        .equation-display .arrow { color: var(--accent); }
+        .equation-display .category { color: #a78bfa; }
+        .equation-display .value { color: var(--success); }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.nucleus { background: var(--accent); }
+        .legend-dot.neutron { background: var(--primary); }
+        .legend-dot.fragment { background: var(--success); }
+        .legend-dot.gamma { background: #a78bfa; }
+
+        /* Criticality Indicator */
+        .criticality {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .criticality.subcritical {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .criticality.critical {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .criticality.supercritical {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        /* Info tooltip */
+        .info-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .info-box code {
+            background: var(--bg-lighter);
+            padding: 0.1rem 0.3rem;
+            border-radius: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Functorial Fission</a>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#paper">Paper</a>
+            <a href="https://github.com/MagnetonIO/functorial-fission">GitHub</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Interactive Fission Simulator</h1>
+        <p class="subtitle">Visualize nuclear fission chain reactions with the functorial framework</p>
+
+        <div class="simulation-grid">
+            <div class="canvas-container">
+                <div class="canvas-header">
+                    <span class="canvas-title">Reactor Visualization</span>
+                    <div class="canvas-controls">
+                        <button class="btn btn-secondary" onclick="resetSimulation()">Reset</button>
+                    </div>
+                </div>
+                <canvas id="simulation-canvas"></canvas>
+                <div class="panel-content">
+                    <div class="legend">
+                        <div class="legend-item"><span class="legend-dot nucleus"></span> Heavy Nucleus (U-235/236)</div>
+                        <div class="legend-item"><span class="legend-dot neutron"></span> Neutron</div>
+                        <div class="legend-item"><span class="legend-dot fragment"></span> Fission Fragment</div>
+                        <div class="legend-item"><span class="legend-dot gamma"></span> Gamma Radiation</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-panel">
+                <div class="panel">
+                    <div class="panel-header">Reactor Controls</div>
+                    <div class="panel-content">
+                        <div class="btn-group">
+                            <button id="start-btn" class="btn btn-success" onclick="startSimulation()">Start</button>
+                            <button id="pause-btn" class="btn btn-secondary" onclick="pauseSimulation()">Pause</button>
+                            <button class="btn btn-primary" onclick="triggerFission()">Trigger Fission</button>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label>Multiplication Factor (k)</label>
+                            <input type="range" id="k-factor" min="0.5" max="1.5" step="0.01" value="1.0" oninput="updateKFactor()">
+                            <div class="range-value" id="k-value">k = 1.00</div>
+                        </div>
+
+                        <div id="criticality-display" class="criticality critical" style="margin-top: 1rem;">
+                            CRITICAL
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">Live Statistics</div>
+                    <div class="panel-content">
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-label">Neutrons</div>
+                                <div class="stat-value neutrons" id="stat-neutrons">0</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Fissions</div>
+                                <div class="stat-value fissions" id="stat-fissions">0</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Energy (MeV)</div>
+                                <div class="stat-value energy" id="stat-energy">0</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Generation</div>
+                                <div class="stat-value time" id="stat-generation">0</div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas id="chart-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">Binding Energy Functor</div>
+                    <div class="panel-content">
+                        <div class="equation-display">
+                            <span class="functor">B</span><span class="arrow">:</span>
+                            <span class="category">Nucl</span> <span class="arrow">→</span>
+                            <span class="category">Energy</span>
+                        </div>
+                        <div class="equation-display" style="margin-top: 0.5rem;">
+                            <span class="functor">B</span>(φ) = <span class="value" id="energy-release">~200 MeV</span>
+                        </div>
+                        <div class="info-box" style="margin-top: 1rem;">
+                            Each fission of <code>²³⁶U</code> releases ~200 MeV and produces 2-3 neutrons.
+                            The functor <code>B</code> maps the fission morphism to this energy release.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">Nuclide Selection</div>
+                    <div class="panel-content">
+                        <div class="form-group">
+                            <label>Fissile Material</label>
+                            <select id="nuclide-select" onchange="updateNuclide()">
+                                <option value="U235">Uranium-235 (²³⁵U)</option>
+                                <option value="U238">Uranium-238 (²³⁸U)</option>
+                                <option value="Pu239">Plutonium-239 (²³⁹Pu)</option>
+                            </select>
+                        </div>
+                        <div class="info-box">
+                            <strong id="nuclide-name">U-235</strong>:
+                            <span id="nuclide-info">Fissile with thermal neutrons. ν ≈ 2.4 neutrons/fission.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========================================================================
+        // FUNCTORIAL FISSION SIMULATOR
+        // JavaScript implementation of the Haskell categorical framework
+        // ========================================================================
+
+        // --- SEMF Coefficients (from Haskell FunctorialFission.SEMF) ---
+        const SEMF = {
+            aVolume: 15.8,
+            aSurface: 18.3,
+            aCoulomb: 0.714,
+            aAsymmetry: 23.2,
+            aPairing: 12.0
+        };
+
+        // --- Nuclide Data (from Haskell FunctorialFission.Core) ---
+        const Nuclides = {
+            U235: { A: 235, Z: 92, name: 'Uranium-235', fissile: true, nu: 2.4, color: '#f59e0b' },
+            U236: { A: 236, Z: 92, name: 'Uranium-236', fissile: false, nu: 2.4, color: '#f59e0b' },
+            U238: { A: 238, Z: 92, name: 'Uranium-238', fissile: false, nu: 2.8, color: '#ea580c' },
+            Pu239: { A: 239, Z: 94, name: 'Plutonium-239', fissile: true, nu: 2.9, color: '#dc2626' },
+            Ba141: { A: 141, Z: 56, name: 'Barium-141', fissile: false, color: '#22c55e' },
+            Kr92: { A: 92, Z: 36, name: 'Krypton-92', fissile: false, color: '#22c55e' },
+            Neutron: { A: 1, Z: 0, name: 'Neutron', fissile: false, color: '#3b82f6' }
+        };
+
+        // --- Binding Energy Functor (from Haskell FunctorialFission.SEMF) ---
+        function pairingTerm(A, Z) {
+            const N = A - Z;
+            if (Z % 2 === 0 && N % 2 === 0) return SEMF.aPairing / Math.sqrt(A);
+            if (A % 2 === 1) return 0;
+            return -SEMF.aPairing / Math.sqrt(A);
+        }
+
+        function bindingEnergy(A, Z) {
+            if (A <= 1) return 0;
+            const volume = SEMF.aVolume * A;
+            const surface = SEMF.aSurface * Math.pow(A, 2/3);
+            const coulomb = SEMF.aCoulomb * Z * Z / Math.pow(A, 1/3);
+            const asymmetry = SEMF.aAsymmetry * Math.pow(A - 2*Z, 2) / A;
+            const pairing = pairingTerm(A, Z);
+            return volume - surface - coulomb - asymmetry + pairing;
+        }
+
+        function bindingPerNucleon(A, Z) {
+            return A > 0 ? bindingEnergy(A, Z) / A : 0;
+        }
+
+        // --- Fission Energy Release (Functor on morphisms) ---
+        function fissionEnergyRelease(parent, fragments) {
+            const parentB = bindingEnergy(parent.A, parent.Z);
+            const fragmentsB = fragments.reduce((sum, f) => sum + bindingEnergy(f.A, f.Z), 0);
+            return fragmentsB - parentB;
+        }
+
+        // --- Simulation State ---
+        let state = {
+            running: false,
+            particles: [],
+            nuclei: [],
+            fragments: [],
+            gammas: [],
+            neutronCount: 0,
+            fissionCount: 0,
+            totalEnergy: 0,
+            generation: 0,
+            kFactor: 1.0,
+            selectedNuclide: 'U235',
+            history: []
+        };
+
+        // --- Canvas Setup ---
+        const canvas = document.getElementById('simulation-canvas');
+        const ctx = canvas.getContext('2d');
+        const chartCanvas = document.getElementById('chart-canvas');
+        const chartCtx = chartCanvas.getContext('2d');
+
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = 500;
+            chartCanvas.width = chartCanvas.parentElement.clientWidth;
+            chartCanvas.height = 150;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // --- Particle Classes ---
+        class Particle {
+            constructor(x, y, vx, vy, type, nuclide) {
+                this.x = x;
+                this.y = y;
+                this.vx = vx;
+                this.vy = vy;
+                this.type = type;
+                this.nuclide = nuclide;
+                this.age = 0;
+                this.lifetime = type === 'gamma' ? 30 : Infinity;
+                this.radius = this.getRadius();
+            }
+
+            getRadius() {
+                switch(this.type) {
+                    case 'nucleus': return 20;
+                    case 'neutron': return 6;
+                    case 'fragment': return 12;
+                    case 'gamma': return 3;
+                    default: return 5;
+                }
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.age++;
+
+                // Boundary reflection
+                if (this.x < this.radius || this.x > canvas.width - this.radius) {
+                    this.vx *= -0.9;
+                    this.x = Math.max(this.radius, Math.min(canvas.width - this.radius, this.x));
+                }
+                if (this.y < this.radius || this.y > canvas.height - this.radius) {
+                    this.vy *= -0.9;
+                    this.y = Math.max(this.radius, Math.min(canvas.height - this.radius, this.y));
+                }
+
+                // Damping
+                this.vx *= 0.995;
+                this.vy *= 0.995;
+            }
+
+            draw() {
+                ctx.beginPath();
+
+                if (this.type === 'gamma') {
+                    // Gamma rays as expanding rings
+                    const alpha = 1 - this.age / this.lifetime;
+                    ctx.strokeStyle = `rgba(167, 139, 250, ${alpha})`;
+                    ctx.lineWidth = 2;
+                    ctx.arc(this.x, this.y, this.age * 2, 0, Math.PI * 2);
+                    ctx.stroke();
+                } else {
+                    // Glow effect
+                    const gradient = ctx.createRadialGradient(
+                        this.x, this.y, 0,
+                        this.x, this.y, this.radius * 2
+                    );
+                    const color = this.nuclide?.color || '#ffffff';
+                    gradient.addColorStop(0, color);
+                    gradient.addColorStop(0.5, color + '80');
+                    gradient.addColorStop(1, 'transparent');
+                    ctx.fillStyle = gradient;
+                    ctx.arc(this.x, this.y, this.radius * 2, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Core
+                    ctx.beginPath();
+                    ctx.fillStyle = color;
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Label for nuclei
+                    if (this.type === 'nucleus' && this.nuclide) {
+                        ctx.fillStyle = '#0f172a';
+                        ctx.font = 'bold 10px Inter';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(this.nuclide.A, this.x, this.y);
+                    }
+                }
+            }
+
+            isExpired() {
+                return this.age > this.lifetime;
+            }
+        }
+
+        // --- Fission Event ---
+        function triggerFissionAt(nucleus) {
+            const nuclideKey = state.selectedNuclide;
+            const nuclide = Nuclides[nuclideKey];
+            const compoundNuclide = nuclideKey === 'U235' ? Nuclides.U236 : nuclide;
+
+            // Calculate energy release using the functor
+            const fragments = [Nuclides.Ba141, Nuclides.Kr92, Nuclides.Neutron, Nuclides.Neutron, Nuclides.Neutron];
+            const energy = fissionEnergyRelease(compoundNuclide, fragments);
+
+            state.fissionCount++;
+            state.totalEnergy += Math.abs(energy);
+
+            // Remove the nucleus
+            const idx = state.nuclei.indexOf(nucleus);
+            if (idx > -1) state.nuclei.splice(idx, 1);
+
+            // Create fission fragments
+            const angle1 = Math.random() * Math.PI * 2;
+            const speed = 3;
+
+            // Fragment 1 (Ba-141)
+            state.fragments.push(new Particle(
+                nucleus.x, nucleus.y,
+                Math.cos(angle1) * speed,
+                Math.sin(angle1) * speed,
+                'fragment',
+                Nuclides.Ba141
+            ));
+
+            // Fragment 2 (Kr-92)
+            state.fragments.push(new Particle(
+                nucleus.x, nucleus.y,
+                Math.cos(angle1 + Math.PI) * speed,
+                Math.sin(angle1 + Math.PI) * speed,
+                'fragment',
+                Nuclides.Kr92
+            ));
+
+            // Emit neutrons (2-3 based on nu)
+            const numNeutrons = Math.floor(nuclide.nu) + (Math.random() < nuclide.nu % 1 ? 1 : 0);
+            for (let i = 0; i < numNeutrons; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const neutronSpeed = 4 + Math.random() * 2;
+                state.particles.push(new Particle(
+                    nucleus.x + Math.cos(angle) * 25,
+                    nucleus.y + Math.sin(angle) * 25,
+                    Math.cos(angle) * neutronSpeed,
+                    Math.sin(angle) * neutronSpeed,
+                    'neutron',
+                    Nuclides.Neutron
+                ));
+                state.neutronCount++;
+            }
+
+            // Emit gamma rays
+            for (let i = 0; i < 5; i++) {
+                state.gammas.push(new Particle(nucleus.x, nucleus.y, 0, 0, 'gamma', null));
+            }
+
+            updateStats();
+        }
+
+        function triggerFission() {
+            // Add a new nucleus and immediately trigger fission
+            const x = canvas.width / 2 + (Math.random() - 0.5) * 200;
+            const y = canvas.height / 2 + (Math.random() - 0.5) * 200;
+            const nucleus = new Particle(x, y, 0, 0, 'nucleus', Nuclides[state.selectedNuclide]);
+            state.generation++;
+            triggerFissionAt(nucleus);
+        }
+
+        // --- Collision Detection ---
+        function checkCollisions() {
+            const toRemove = [];
+
+            for (let i = state.particles.length - 1; i >= 0; i--) {
+                const neutron = state.particles[i];
+                if (neutron.type !== 'neutron') continue;
+
+                for (let j = state.nuclei.length - 1; j >= 0; j--) {
+                    const nucleus = state.nuclei[j];
+                    const dx = neutron.x - nucleus.x;
+                    const dy = neutron.y - nucleus.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < neutron.radius + nucleus.radius) {
+                        // Neutron absorbed - check if fission occurs
+                        if (Math.random() < state.kFactor) {
+                            triggerFissionAt(nucleus);
+                        }
+                        toRemove.push(i);
+                        state.neutronCount--;
+                        break;
+                    }
+                }
+            }
+
+            // Remove absorbed neutrons
+            toRemove.sort((a, b) => b - a);
+            toRemove.forEach(idx => state.particles.splice(idx, 1));
+        }
+
+        // --- Add Target Nuclei ---
+        function addNuclei(count) {
+            for (let i = 0; i < count; i++) {
+                const x = 50 + Math.random() * (canvas.width - 100);
+                const y = 50 + Math.random() * (canvas.height - 100);
+                state.nuclei.push(new Particle(x, y, 0, 0, 'nucleus', Nuclides[state.selectedNuclide]));
+            }
+        }
+
+        // --- Update Functions ---
+        function updateKFactor() {
+            state.kFactor = parseFloat(document.getElementById('k-factor').value);
+            document.getElementById('k-value').textContent = `k = ${state.kFactor.toFixed(2)}`;
+
+            const display = document.getElementById('criticality-display');
+            if (state.kFactor < 0.99) {
+                display.className = 'criticality subcritical';
+                display.textContent = 'SUBCRITICAL';
+            } else if (state.kFactor <= 1.01) {
+                display.className = 'criticality critical';
+                display.textContent = 'CRITICAL';
+            } else {
+                display.className = 'criticality supercritical';
+                display.textContent = 'SUPERCRITICAL';
+            }
+        }
+
+        function updateNuclide() {
+            state.selectedNuclide = document.getElementById('nuclide-select').value;
+            const nuclide = Nuclides[state.selectedNuclide];
+            document.getElementById('nuclide-name').textContent = nuclide.name;
+
+            const infoTexts = {
+                'U235': 'Fissile with thermal neutrons. ν ≈ 2.4 neutrons/fission.',
+                'U238': 'Fissionable only with fast neutrons. ν ≈ 2.8 neutrons/fission.',
+                'Pu239': 'Highly fissile. ν ≈ 2.9 neutrons/fission. Used in reactors and weapons.'
+            };
+            document.getElementById('nuclide-info').textContent = infoTexts[state.selectedNuclide];
+
+            // Update existing nuclei colors
+            state.nuclei.forEach(n => n.nuclide = nuclide);
+        }
+
+        function updateStats() {
+            document.getElementById('stat-neutrons').textContent = state.neutronCount;
+            document.getElementById('stat-fissions').textContent = state.fissionCount;
+            document.getElementById('stat-energy').textContent = state.totalEnergy.toFixed(0);
+            document.getElementById('stat-generation').textContent = state.generation;
+
+            // Update history for chart
+            state.history.push({
+                neutrons: state.neutronCount,
+                energy: state.totalEnergy
+            });
+            if (state.history.length > 100) state.history.shift();
+
+            drawChart();
+        }
+
+        function drawChart() {
+            chartCtx.clearRect(0, 0, chartCanvas.width, chartCanvas.height);
+
+            if (state.history.length < 2) return;
+
+            // Find max values for scaling
+            const maxNeutrons = Math.max(...state.history.map(h => h.neutrons), 10);
+
+            // Draw neutron line
+            chartCtx.beginPath();
+            chartCtx.strokeStyle = '#3b82f6';
+            chartCtx.lineWidth = 2;
+
+            state.history.forEach((h, i) => {
+                const x = (i / (state.history.length - 1)) * chartCanvas.width;
+                const y = chartCanvas.height - (h.neutrons / maxNeutrons) * (chartCanvas.height - 20) - 10;
+                if (i === 0) chartCtx.moveTo(x, y);
+                else chartCtx.lineTo(x, y);
+            });
+            chartCtx.stroke();
+
+            // Labels
+            chartCtx.fillStyle = '#64748b';
+            chartCtx.font = '10px Inter';
+            chartCtx.fillText('Neutrons', 5, 12);
+            chartCtx.fillText(maxNeutrons.toString(), chartCanvas.width - 30, 12);
+        }
+
+        // --- Main Loop ---
+        function update() {
+            // Update particles
+            state.particles.forEach(p => p.update());
+            state.nuclei.forEach(n => n.update());
+            state.fragments.forEach(f => f.update());
+
+            // Check collisions
+            checkCollisions();
+
+            // Remove expired particles
+            state.gammas = state.gammas.filter(g => !g.isExpired());
+            state.fragments = state.fragments.filter(f => {
+                // Remove fragments that leave the screen
+                return f.x > -50 && f.x < canvas.width + 50 && f.y > -50 && f.y < canvas.height + 50;
+            });
+
+            // Respawn nuclei to maintain population
+            if (state.nuclei.length < 15 && state.running) {
+                addNuclei(1);
+            }
+        }
+
+        function draw() {
+            // Clear canvas
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw grid
+            ctx.strokeStyle = 'rgba(71, 85, 105, 0.3)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < canvas.width; x += 40) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // Draw all particles
+            state.gammas.forEach(g => g.draw());
+            state.fragments.forEach(f => f.draw());
+            state.nuclei.forEach(n => n.draw());
+            state.particles.forEach(p => p.draw());
+        }
+
+        let animationId = null;
+
+        function gameLoop() {
+            if (state.running) {
+                update();
+            }
+            draw();
+            animationId = requestAnimationFrame(gameLoop);
+        }
+
+        // --- Control Functions ---
+        function startSimulation() {
+            state.running = true;
+            document.getElementById('start-btn').disabled = true;
+            document.getElementById('pause-btn').disabled = false;
+
+            if (state.nuclei.length === 0) {
+                addNuclei(20);
+            }
+        }
+
+        function pauseSimulation() {
+            state.running = false;
+            document.getElementById('start-btn').disabled = false;
+            document.getElementById('pause-btn').disabled = true;
+        }
+
+        function resetSimulation() {
+            state.running = false;
+            state.particles = [];
+            state.nuclei = [];
+            state.fragments = [];
+            state.gammas = [];
+            state.neutronCount = 0;
+            state.fissionCount = 0;
+            state.totalEnergy = 0;
+            state.generation = 0;
+            state.history = [];
+
+            document.getElementById('start-btn').disabled = false;
+            document.getElementById('pause-btn').disabled = true;
+
+            updateStats();
+            addNuclei(20);
+        }
+
+        // --- Initialize ---
+        resetSimulation();
+        gameLoop();
+    </script>
+</body>
+</html>
